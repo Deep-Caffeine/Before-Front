@@ -1,6 +1,4 @@
-"use client";
-import axios, { AxiosResponse } from 'axios';
-
+import axios from 'axios';
 
 export default function Home() {
 
@@ -15,7 +13,6 @@ export default function Home() {
         alert('인증되지 않아 해당 작업을 수행할 수 없습니다.');
       }
     } catch (error) {
-      console.log('실패함')
       console.error(error);
     }
   };
