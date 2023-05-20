@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import { SignUp } from "../types/signup";
 
 export default function Signup() {
@@ -10,6 +10,15 @@ export default function Signup() {
     phone: "",
     birth: "",
   });
+  
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
 
   return (
     <>
@@ -21,6 +30,7 @@ export default function Signup() {
             type="email"
             name="email"
             value={formData.email}
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -29,6 +39,7 @@ export default function Signup() {
             type="password"
             name="password"
             value={formData.password}
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -37,6 +48,7 @@ export default function Signup() {
             type="text"
             name="username"
             value={formData.username}
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -45,6 +57,7 @@ export default function Signup() {
             type="text"
             name="phone"
             value={formData.phone}
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -53,6 +66,7 @@ export default function Signup() {
             type="date"
             name="birth"
             value={formData.birth}
+            onChange={handleChange}
           />
         </div>
         <button type="submit">가입하기</button>
