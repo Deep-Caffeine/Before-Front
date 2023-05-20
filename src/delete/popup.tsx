@@ -7,9 +7,9 @@ interface Response{
   }
 
 export default function Popup() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [pw, set_pw] = useState("");
-  const [isS, set_isS] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [pw, set_pw] = useState<string>("");
+  const [isS, set_isS] = useState<boolean>(false);
 
   const openPopup = () => {
     setIsOpen(true);
