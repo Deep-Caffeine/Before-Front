@@ -10,7 +10,7 @@ export default function Signup() {
     phone: "",
     birth: "",
   });
-  
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -19,11 +19,20 @@ export default function Signup() {
     }));
   };
 
+  const signupSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("/api/signup", formData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
       <h1>회원가입</h1>
-      <form>
+      <form onSubmit={signupSubmit}>
         <div>
           <label>Email</label>
           <input
