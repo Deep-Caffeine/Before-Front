@@ -23,7 +23,16 @@ export default function Signup() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("/api/signup", formData);
+      const response = await axios.post(
+        "http://www.ideaconnect.online/user",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response);
     } catch (error) {
       console.error(error);
     }
