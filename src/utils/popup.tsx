@@ -1,10 +1,8 @@
 "use client";
+import { d_response } from '@/types/delete';
 import axios, { AxiosResponse } from 'axios';
 import { useState } from 'react';
 
-interface Response{
-    'status' : number
-  }
 
 export default function Popup() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -21,7 +19,7 @@ export default function Popup() {
 
   const fetchDelete = async () => {
     try {
-      const response: AxiosResponse<Response> = await axios.get('delete url');
+      const response: AxiosResponse<d_response> = await axios.get('https://www.ideaconnect.online/auth');
       console.log(response);
       if (response.status === 200) {
         alert('정상적으로 탈퇴 되었습니다.');
@@ -39,7 +37,7 @@ export default function Popup() {
   const fetchAuthentication = async () =>{
     console.log(pw)
     try{
-      const response: AxiosResponse<Response> = await axios.post('login url',{
+      const response: AxiosResponse<Response> = await axios.post('https://www.ideaconnect.online/login',{
         'id' : '쿠키에 저장되어있던 id',
         'pw' : pw
       });
@@ -51,10 +49,10 @@ export default function Popup() {
       }
       if (response.status === 401) {
         alert('비밀번호를 확인해 주세요');
-        closePopup()
+        
       }
     } catch (error) {
-        alert('2중 인증 요청 실패')
+        alert('인증 요청 실패, 다시 시도해 주세요')
         console.log('실패');
         console.error(error);
         closePopup()
