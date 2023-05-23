@@ -8,7 +8,7 @@ export default function Popup() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [pw, set_pw] = useState<string>("");
   const [isS, set_isS] = useState<boolean>(false);
-
+  const AUTH_API_BASE_URL = 'https://www.ideaconnect.online';
   const openPopup = () => {
     setIsOpen(true);
   };
@@ -19,7 +19,7 @@ export default function Popup() {
 
   const fetchDelete = async () => {
     try {
-      const response: AxiosResponse<UserDeleteResponseDto> = await axios.get('https://www.ideaconnect.online/auth');
+      const response: AxiosResponse<UserDeleteResponseDto> = await axios.get(`${AUTH_API_BASE_URL}/auth`);
       if (response.status === 200) {
         alert('정상적으로 탈퇴 되었습니다.');
       }
@@ -34,7 +34,7 @@ export default function Popup() {
   const fetchAuthentication = async () =>{
 
     try{
-      const response: AxiosResponse<Response> = await axios.post('https://www.ideaconnect.online/login',{
+      const response: AxiosResponse<Response> = await axios.post(`${AUTH_API_BASE_URL}/login`,{
         'id' : '쿠키에 저장되어있던 id',
         'pw' : pw
       })
