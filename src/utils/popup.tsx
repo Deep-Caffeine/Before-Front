@@ -20,7 +20,6 @@ export default function Popup() {
   const fetchDelete = async () => {
     try {
       const response: AxiosResponse<UserDeleteResponseDto> = await axios.get('https://www.ideaconnect.online/auth');
-      console.log(response);
       if (response.status === 200) {
         alert('정상적으로 탈퇴 되었습니다.');
       }
@@ -29,19 +28,16 @@ export default function Popup() {
       }
     } catch (error) {
         alert('탈퇴 요청 실패')
-      console.log('실패');
-      console.error(error);
     }
   };
 
   const fetchAuthentication = async () =>{
-    console.log(pw)
+
     try{
       const response: AxiosResponse<Response> = await axios.post('https://www.ideaconnect.online/login',{
         'id' : '쿠키에 저장되어있던 id',
         'pw' : pw
-      });
-      console.log(response);
+      })
       if (response.status === 200) {
         alert('인증에 성공했습니다');
         closePopup()
@@ -53,8 +49,6 @@ export default function Popup() {
       }
     } catch (error) {
         alert('인증 요청 실패, 다시 시도해 주세요')
-        console.log('실패');
-        console.error(error);
         closePopup()
     }
   }
