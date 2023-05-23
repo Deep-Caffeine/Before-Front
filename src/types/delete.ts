@@ -1,3 +1,3 @@
-export interface d_response{
+export interface UserDeleteResponseDto{
     'status' : number
   }

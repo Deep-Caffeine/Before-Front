@@ -1,5 +1,5 @@
 "use client";
-import { d_response } from '@/types/delete';
+import { UserDeleteResponseDto } from '@/types/delete';
 import axios, { AxiosResponse } from 'axios';
 import { useState } from 'react';
 
@@ -19,7 +19,7 @@ export default function Popup() {
 
   const fetchDelete = async () => {
     try {
-      const response: AxiosResponse<d_response> = await axios.get('https://www.ideaconnect.online/auth');
+      const response: AxiosResponse<UserDeleteResponseDto> = await axios.get('https://www.ideaconnect.online/auth');
       console.log(response);
       if (response.status === 200) {
         alert('정상적으로 탈퇴 되었습니다.');
