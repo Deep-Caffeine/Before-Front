@@ -1,24 +1,15 @@
 "use client";
 import axios from 'axios';
 import { useState } from 'react'
-
-interface Database {
-  email: string;
-  username: string;
-  phone: string;
-  birth: string;
-  profile_url: string;
-  level: number;
-  sns: string[];
-}
+import { UserData } from '../../types/user/read'
 
 export default function Read() {
-    const [data, setData] = useState<Database | null>(null);
+    const [data, setData] = useState< UserData | null >(null);
   
     async function fetchRead() {
       try {
         const response = await axios.get('read_url'); 
-        const jsonData: Database = response.data;
+        const jsonData: UserData = response.data;
         setData(jsonData);
         if (response.status == 200){
            console.log('정상적으로 처리됨')
