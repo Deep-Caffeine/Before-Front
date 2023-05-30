@@ -1,5 +1,4 @@
 "use client";
-import { UserDeleteResponseDto } from '@/types/user/delete';
 import axios, { AxiosResponse } from 'axios';
 import { useState } from 'react';
 
@@ -19,11 +18,12 @@ export default function Popup() {
 
   const fetchDelete = async () => {
     try {
-      const response: AxiosResponse<UserDeleteResponseDto> = await axios.get(`${AUTH_API_BASE_URL}/auth`);
-      if (response.status === 200) {
+      const response: AxiosResponse<Response> = await axios.get(`${AUTH_API_BASE_URL}/auth`);
+      const status:number = response.status
+      if (status === 200) {
         alert('정상적으로 탈퇴 되었습니다.');
       }
-      if (response.status === 401) {
+      if (status === 401) {
         alert('인증되지 않아 해당 작업을 수행할 수 없습니다.');
       }
     } catch (error) {
@@ -35,15 +35,16 @@ export default function Popup() {
 
     try{
       const response: AxiosResponse<Response> = await axios.post(`${AUTH_API_BASE_URL}/login`,{
-        'id' : '쿠키에 저장되어있던 id',
+        'id' : '쿠키에 저장되어있던 id', //로그인 구현시 인터페이스 정의 예정
         'pw' : pw
       })
-      if (response.status === 200) {
+      const status:number = response.status
+      if (status === 200) {
         alert('인증에 성공했습니다');
         closePopup()
         set_isS(true);
       }
-      if (response.status === 401) {
+      if (status === 401) {
         alert('비밀번호를 확인해 주세요');
         
       }
