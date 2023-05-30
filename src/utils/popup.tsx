@@ -1,5 +1,5 @@
 "use client";
-import { UserDeleteResponseDto } from '@/types/delete';
+import { UserDeleteResponseDto } from '@/types/user/delete';
 import axios, { AxiosResponse } from 'axios';
 import { useState } from 'react';
 
