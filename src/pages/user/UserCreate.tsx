@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useState, FormEvent, ChangeEvent } from "react";
-import { SignUp } from "../types/signup";
-import { useNavigate } from "react-router-dom";
+import { UserCreate, UserCreateResponseDto } from "../../types/user/UserCreate";
+import { useRouter } from "next/router";
 
-export default function Signup() {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState<SignUp>({
+export default function UserCreate() {
+  const router = useRouter();
+  const [formData, setFormData] = useState<UserCreate>({
     email: "",
     password: "",
     username: "",
@@ -25,7 +25,7 @@ export default function Signup() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
+      const response: AxiosResponse<UserCreateResponseDto> = await axios.post(
         "http://www.ideaconnect.online/user",
         formData
       );
@@ -33,12 +33,12 @@ export default function Signup() {
       if (response.status === 200) {
         // 성공적으로 처리된 경우
         // 로그인 페이지로 이동
-        navigate("/login");
+        router.push("/login");
       } else if (response.status === 400) {
         // 잘못된 요청인 경우
         // false 데이터 다시 작성해달라고 요청하기
         const { data } = response;
-        if (data && typeof data === "object") {
+        if (data) {
           // 서버에서 false 값을 받아옴
           const { email, password, username, phone, birth } = data;
           if (email === false) {
@@ -51,7 +51,7 @@ export default function Signup() {
             alert("닉네임이 올바르지 않습니다.");
           }
           if (phone === false) {
-            alert("전화번호 형식이 올바르지 않습니다.")
+            alert("전화번호 형식이 올바르지 않습니다.");
           }
           if (birth === false) {
             alert("생년월일 형식이 올바르지 않습니다.");
@@ -60,10 +60,10 @@ export default function Signup() {
       } else if (response.status === 500) {
         // 서버 내부 오류인 경우
         // 다시 회원가입 요청 하기
-        alert('다시 회원가입 요청을 해주시길 바랍니다.')
+        alert("다시 회원가입 요청을 해주시길 바랍니다.");
       }
     } catch (error) {
-        alert("회원가입 실패");
+      alert("회원가입 실패");
     }
   };
 
