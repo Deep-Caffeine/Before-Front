@@ -1,6 +1,7 @@
 export interface UserCreate {
   email: string;
   password: string;
+  checkPw: string;
   username: string;
   phone: string;
   birth: string;

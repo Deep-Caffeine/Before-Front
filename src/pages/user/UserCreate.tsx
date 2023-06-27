@@ -1,33 +1,51 @@
 import axios, { AxiosResponse } from "axios";
-import { useState, FormEvent, ChangeEvent } from "react";
-import { UserCreate, UserCreateResponseDto } from "../../types/user/UserCreate";
+import { useState, ChangeEvent } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { useRouter } from "next/router";
+import { UserCreate, UserCreateResponseDto } from "../../types/user/UserCreate";
+
+const schema = yup.object().shape({
+  email: yup
+    .string()
+    .email("email 형식을 입력해주세요")
+    .required("이메일(아이디)를 입력해 주세요"),
+  password: yup
+    .string()
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&])[A-Za-z\d@!%*#?&]{8,}$/,
+      "8글자 이상 문자, 숫자, 특수문자를 조합해서 입력하세요"
+    )
+    .required("비밀번호를 입력해 주세요"),
+  username: yup.string().min(2).max(10).required(),
+  checkPw: yup
+    .string()
+    .oneOf([yup.ref("password"), "비밀번호가 일치하지 않습니다."])
+    .required(),
+  phone: yup
+    .string()
+    .matches(/^\d{3}-\d{4}-\d{4}$/, "전화번호 형식이 올바르지 않습니다.")
+    .required(),
+  birth: yup.string().required("생년월일을 입력해 주세요"),
+});
 
 export default function UserCreate() {
   const router = useRouter();
-  const [formData, setFormData] = useState<UserCreate>({
-    email: "",
-    password: "",
-    username: "",
-    phone: "",
-    birth: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserCreate>({
+    mode: "onChange",
+    resolver: yupResolver(schema),
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
-
-  const signupSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit: SubmitHandler<UserCreate> = async (data) => {
     try {
       const response: AxiosResponse<UserCreateResponseDto> = await axios.post(
         "http://www.ideaconnect.online/user",
-        formData
+        data
       );
       // 상태 코드에 따른 처리
       if (response.status === 200) {
@@ -70,51 +88,36 @@ export default function UserCreate() {
   return (
     <>
       <h1>회원가입</h1>
-      <form onSubmit={signupSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
+          <input type="email" {...register("email")} />
+          {errors.email && <p>{errors.email.message}</p>}
         </div>
         <div>
           <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
+          <input type="password" {...register("password")} />
+          {errors.password && <p>{errors.password.message}</p>}
+        </div>
+        <div>
+          <label>checkPw</label>
+          <input type="password" {...register("checkPw")} />
+          {errors.password && <p>{errors.password.message}</p>}
         </div>
         <div>
           <label>Username</label>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-          />
+          <input type="text" {...register("username")} />
+          {errors.username && <p>{errors.username.message}</p>}
         </div>
         <div>
           <label>Phone</label>
-          <input
-            type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-          />
+          <input type="text" {...register("phone")} />
+          {errors.phone && <p>{errors.phone.message}</p>}
         </div>
         <div>
           <label>Birth</label>
-          <input
-            type="date"
-            name="birth"
-            value={formData.birth}
-            onChange={handleChange}
-          />
+          <input type="date" {...register("birth")} />
+          {errors.birth && <p>{errors.birth.message}</p>}
         </div>
         <button type="submit">가입하기</button>
       </form>
